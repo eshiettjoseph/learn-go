@@ -1,11 +1,22 @@
 package main 
 
-import(
-	"fmt"
-	)
+import "fmt"
+	
+
+func intSeq() func() int {
+	i := 0
+	return func() int {
+		i++
+		return i
+	}
+}
 
 func main() {
-	var t, c int = 2, 4
+	nextInt := intSeq()
 
-	fmt.Println("Joseph Eshiett", t, c)
+	fmt.Println(nextInt())
+	fmt.Println(nextInt())
+	fmt.Println(nextInt())
 }
+
+
