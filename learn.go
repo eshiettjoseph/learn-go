@@ -3,20 +3,14 @@ package main
 import "fmt"
 	
 
-func intSeq() func() int {
-	i := 0
-	return func() int {
-		i++
-		return i
-	}
+func testPointer(x *int) {
+	*x = 2
 }
 
 func main() {
-	nextInt := intSeq()
-
-	fmt.Println(nextInt())
-	fmt.Println(nextInt())
-	fmt.Println(nextInt())
+	test := 5
+	testPointer(&test)
+	fmt.Println(test)
 }
 
 
