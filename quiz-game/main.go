@@ -1,8 +1,9 @@
-package main 
+package main
 
-import(
-	"fmt"
+import (
+	"encoding/csv"
 	"flag"
+	"fmt"
 	"os"
 )
 func exit(msg string) {
@@ -16,5 +17,28 @@ func main() {
 	if err != nil {
 		exit(fmt.Sprintf("Failed to open the CSV file: %s\n", *csvFilename))
 	}
-	
+	r := csv.NewReader(file)
+	lines, err := r.ReadAll()
+	if err != nil {
+		exit("Failed to parse the CSV file.")
+	}
+	problems := parseLines(lines)
+	fmt.Println(problems)
+
+}
+
+type problem struct {
+	question string
+	answer string
+}
+
+func parseLines(lines [][]string) []problem {
+	ret := make([]problem, len(lines))
+	for i, line :=range lines {
+		ret[i] = problem{
+			question: line[0],
+			answer: line[1],
+		}
+	}
+	return ret
 }
