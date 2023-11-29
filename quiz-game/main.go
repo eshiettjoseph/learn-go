@@ -23,7 +23,14 @@ func main() {
 		exit("Failed to parse the CSV file.")
 	}
 	problems := parseLines(lines)
-	fmt.Println(problems)
+	for i, p := range problems {
+		fmt.Printf("Problem #%d: %s = \n", i+1, p.question)
+		var answer string
+		fmt.Scanf("%s\n", &answer)
+		if answer == p.answer {
+			fmt.Println("Correct")
+		}
+	}
 
 }
 
