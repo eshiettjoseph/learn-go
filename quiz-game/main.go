@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
+	
 )
 func exit(msg string) {
 	fmt.Println(msg)
@@ -23,14 +25,18 @@ func main() {
 		exit("Failed to parse the CSV file.")
 	}
 	problems := parseLines(lines)
+
+	// Keep track of how many problems we get correct
+	correct := 0
 	for i, p := range problems {
 		fmt.Printf("Problem #%d: %s = \n", i+1, p.question)
 		var answer string
 		fmt.Scanf("%s\n", &answer)
 		if answer == p.answer {
-			fmt.Println("Correct")
+			correct++
 		}
 	}
+	fmt.Printf("You got %d out of %d questions correct\n", correct, len(problems))
 
 }
 
@@ -44,7 +50,7 @@ func parseLines(lines [][]string) []problem {
 	for i, line :=range lines {
 		ret[i] = problem{
 			question: line[0],
-			answer: line[1],
+			answer: strings.TrimSpace(line[1]),
 		}
 	}
 	return ret
