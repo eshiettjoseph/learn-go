@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	
+	"time"
 )
 func exit(msg string) {
 	fmt.Println(msg)
@@ -14,6 +14,8 @@ func exit(msg string) {
 }
 func main() {
 	csvFilename := flag.String("csv", "problems.csv", "a csv file in the format 'question,answer'")
+	timeLimit := flag.Int("limit", 30, "The time limit for the quiz in seconds")
+
 	flag.Parse()
 	file, err := os.Open(*csvFilename)
 	if err != nil {
@@ -25,6 +27,10 @@ func main() {
 		exit("Failed to parse the CSV file.")
 	}
 	problems := parseLines(lines)
+
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+	// Blocked until message sent to channel
+	<-timer.C
 
 	// Keep track of how many problems we get correct
 	correct := 0
