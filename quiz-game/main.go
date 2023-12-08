@@ -33,14 +33,18 @@ func main() {
 	// Keep track of how many problems we get correct
 	correct := 0
 	for i, p := range problems {
-		select {
-		case <-timer.C:
-			fmt.Printf("You got %d out of %d questions correct\n", correct, len(problems))
-			return
-		default:
-			fmt.Printf("Problem #%d: %s = \n", i+1, p.question)
+		fmt.Printf("Problem #%d: %s = ", i+1, p.question)
+		answerChan := make(chan string)
+		go func() {
 			var answer string
 			fmt.Scanf("%s\n", &answer)
+			answerChan <- answer
+		}()
+		select {
+		case <-timer.C:
+			fmt.Printf("\nYou got %d out of %d questions correct\n", correct, len(problems))
+			return
+		case answer := <- answerChan:
 			if answer == p.answer {
 				correct++
 			}
